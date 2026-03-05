@@ -1,7 +1,7 @@
 import pandas as pd
 from src.io import load_headlines_csv
 from src.sentiment import get_vader, score_text
-from src.scoring import label_from_compound
+from src.scoring import label_from_compound, daily_sentiment
 
 
 def main():
@@ -17,6 +17,10 @@ def main():
     df_scored["sentiment"] = df_scored["compound"].apply(label_from_compound)
 
     print(df_scored[["date", "ticker", "text", "compound", "sentiment"]].head(5))
+
+    df_daily = daily_sentiment(df_scored)
+    print("\nDaily sentiment score: ")
+    print(df_daily)
 
 
 if __name__ == "__main__":

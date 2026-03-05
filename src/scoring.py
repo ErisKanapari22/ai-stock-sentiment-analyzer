@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 def label_from_compound(compound: float) -> str:
 
     if compound >= 0.05:
@@ -7,3 +10,16 @@ def label_from_compound(compound: float) -> str:
         return "negative"
 
     return "neutral"
+
+def daily_sentiment(df: pd.DataFrame) -> pd.DataFrame:
+
+    result = (
+        df.groupby(["date", "ticker"])
+        .agg(
+            daily_sentiment_score=("compound", "mean"),
+            news_count=("compound", "count")
+        )
+        .reset_index()
+    )
+    return  result
+
