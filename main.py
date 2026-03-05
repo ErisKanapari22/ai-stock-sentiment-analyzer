@@ -1,6 +1,7 @@
 import pandas as pd
 from src.io import load_headlines_csv
 from src.sentiment import get_vader, score_text
+from src.scoring import label_from_compound
 
 
 def main():
@@ -13,7 +14,9 @@ def main():
 
     df_scored = pd.concat([df, scores_df], axis=1)
 
-    print(df_scored[["date", "ticker", "text", "compound"]].head(5))
+    df_scored["sentiment"] = df_scored["compound"].apply(label_from_compound)
+
+    print(df_scored[["date", "ticker", "text", "compound", "sentiment"]].head(5))
 
 
 if __name__ == "__main__":
