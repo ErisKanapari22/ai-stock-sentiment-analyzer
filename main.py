@@ -4,6 +4,7 @@ from src.io import load_headlines_csv
 from src.sentiment import get_vader, score_text
 from src.scoring import label_from_compound, daily_sentiment
 from src.report import build_daily_report
+from src.plot import prot_sentiment_trend
 
 
 
@@ -42,6 +43,12 @@ def main():
 
     print("\nFinal report: (Daily Score + Signal) ")
     print(df_report)
+
+    prot_sentiment_trend(
+        df_report,
+        ticker='AAPL',
+        outpath="outputs/AAPL_sentiment.png"
+    )
 
 
 if __name__ == "__main__":
