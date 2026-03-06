@@ -23,3 +23,12 @@ def daily_sentiment(df: pd.DataFrame) -> pd.DataFrame:
     )
     return  result
 
+def signal_from_score(score: float, bullish: float = 0.10, bearish: float = -0.10) -> str:
+
+    if score >= bullish:
+        return "bullish"
+
+    if score <= bearish:
+        return "bearish"
+
+    return "neutral"
