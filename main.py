@@ -1,8 +1,10 @@
 import pandas as pd
+import os
 from src.io import load_headlines_csv
 from src.sentiment import get_vader, score_text
 from src.scoring import label_from_compound, daily_sentiment
 from src.report import build_daily_report
+
 
 
 def main():
@@ -19,6 +21,19 @@ def main():
     df_daily = daily_sentiment(df_scored)
 
     df_report = build_daily_report(df_daily)
+
+    os.makedirs("data/processed", exist_ok=True)
+    df_report.to_csv(
+        "data/processed/daily_sentiment.csv",
+        index=False
+    )
+
+    os.makedirs("outputs", exist_ok=True)
+
+    with open("outputs/report.txt", "w", encoding="utf-8") as f:
+        f.write("AI Stock Sentiment Analyzer Report\n")
+        f.write("---------------------------------\n\n")
+        f.write(df_report.to_string())
 
     print(df_scored[["date", "ticker", "text", "compound", "sentiment"]].head(5))
 
