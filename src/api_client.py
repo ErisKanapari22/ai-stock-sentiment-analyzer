@@ -3,13 +3,12 @@ import requests
 import pandas as pd
 from dotenv import load_dotenv
 
-load_dotenv()
-
 BASE_URL = "https://finnhub.io/api/v1/company-news"
 
 
 def fetch_company_news(symbol: str, from_date: str, to_date: str) -> pd.DataFrame:
-    api_key = os.getenv("API_KEY")
+    load_dotenv()
+    api_key = os.getenv("FINNHUB_API_KEY")
     if not api_key:
         raise ValueError("FINNHUB_API_KEY was not found in environment variables.")
 
