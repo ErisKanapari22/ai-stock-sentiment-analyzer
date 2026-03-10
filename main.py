@@ -7,21 +7,46 @@ from src.sentiment import get_vader, score_text
 from src.scoring import label_from_compound, daily_sentiment
 from src.report import build_daily_report
 from src.plot import plot_sentiment_trend
-
+from src.api_client import fetch_company_news
 
 
 def parse_arg():
     parser = argparse.ArgumentParser(description="AI Stock Sentiment Analyzer")
-    parser.add_argument("--input", default="data/raw/sample_headlines.csv", help="Path to input CSV")
+
+    parser.add_argument("--input", default="data/raw/sample_headline.csv", help="Path to input CSV")
     parser.add_argument("--ticker", default="AAPL", help="Ticker Symbol (e.g. AAPL, TSLA)")
     parser.add_argument("--plot", action="store_true", help="Generate sentiment trend chart")
+
+    parser.add_argument("--use-api", action="store_true", help="Use Finnhub API instead of CSV input")
+    parser.add_argument("--from-date", default="2026-03-01", help="Start date for API news in YYYY-MM-DD format")
+    parser.add_argument("--to-date", default="2026-03-10", help="End date for API news in YYYY-MM-DD format")
+
     return parser.parse_args()
+
+
+def load_input_data(args) -> pd.DataFrame:
+    if args.use_api:
+        print(f"Using Finnhub API: {args.ticker}...")
+        df = fetch_company_news(
+            symbol=args.ticker,
+            from_date=args.from_date,
+            to_date=args.to_date
+        )
+    else:
+        print(f"Using CSV input: {args.input}")
+        df = load_headlines_csv(args.input)
+
+    return df
+
 
 def main():
     args = parse_arg()
 
     # 1) Load input
-    df = load_headlines_csv("data/raw/sample_headline.csv")
+    df = load_input_data(args)
+    if df.empty:
+        print("No data found for selected input.")
+        return
 
     # 2) Score headlines with VADER
     sia = get_vader()
@@ -45,24 +70,19 @@ def main():
         index=False
     )
 
+    # 7) Save text report
     os.makedirs("outputs", exist_ok=True)
-
     with open("outputs/report.txt", "w", encoding="utf-8") as f:
         f.write("AI Stock Sentiment Analyzer Report\n")
         f.write("---------------------------------\n\n")
         f.write(df_report.to_string())
+        f.write("\n")
 
-    # 7) Print to console
-    print("\nFinal report: (Daily Score + Signal) ")
+    # 8) Print final report
+    print("\nFINAL REPORT (Daily Score + Signal)")
     print(df_report)
 
-    plot_sentiment_trend(
-        df_report,
-        ticker='AAPL',
-        outpath="outputs/AAPL_sentiment.png"
-    )
-
-    # 8) Optional plot for chosen ticker
+    # 9) Optional chart
     if args.plot:
         ticker = args.ticker.upper().strip()
         plot_path = f"outputs/{ticker}_sentiment.png"
