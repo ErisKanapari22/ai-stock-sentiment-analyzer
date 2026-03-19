@@ -2,11 +2,7 @@ AI Stock Sentiment Analyzer Report
 ---------------------------------
 
          date ticker  daily_sentiment_score  news_count   signal
-0  2026-03-03   TSLA               0.059607          27  neutral
-1  2026-03-04   TSLA               0.037109          56  neutral
-2  2026-03-05   TSLA               0.028296          27  neutral
-3  2026-03-06   TSLA               0.005783          24  neutral
-4  2026-03-07   TSLA               0.111359          17  bullish
-5  2026-03-08   TSLA               0.145300          10  bullish
-6  2026-03-09   TSLA               0.011430          37  neutral
-7  2026-03-10   TSLA               0.181907          41  bullish
+0  2026-03-01   AAPL                0.38745           2  bullish
+1  2026-03-01   TSLA                0.00000           1  neutral
+2  2026-03-02   AAPL                0.49390           1  bullish
+3  2026-03-02   TSLA               -0.49390           1  bearish
