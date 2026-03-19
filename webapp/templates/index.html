@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Stock Sentiment Analyzer</title>
+</head>
+<body>
+    <h1>Stock Sentiment Analyzer</h1>
+
+    <form id="analyze-form">
+        <input type="text" id="ticker" placeholder="Enter ticker (AAPL)" required>
+
+        <select id="source">
+            <option value="api">API</option>
+            <option value="csv">CSV</option>
+        </select>
+
+        <input type="date" id="start_date">
+        <input type="date" id="end_date">
+
+        <button type="submit">Analyze</button>
+    </form>
+
+    <div id="results"></div>
+</body>
+</html>
