@@ -1,197 +1,140 @@
-# AI Stock Sentiment Analyzer (Python + NLP)
+# 📊 AI Stock Sentiment Analyzer (Web App)
 
-A lightweight **Stock Sentiment Analyzer** that collects stock-related news headlines, performs **sentiment analysis
-using VADER**, and produces a **daily sentiment score per ticker** along with a simple **trading-style signal**:
-Bullish / Bearish / Neutral.
+A full-stack web application that analyzes financial news sentiment for stocks and generates trading signals using NLP techniques.
 
-The project supports two input sources:
-
-- Static CSV files
-- Real-time financial news via the **Finnhub API**
-
-Optionally, it generates a **sentiment trend chart** for visualization.
+This project combines Natural Language Processing (VADER), data aggregation, and a Flask-based web interface to provide real-time sentiment insights for stock tickers.
 
 ---
 
-## Features
+## 🚀 Features
 
-- CSV input (`date`, `ticker`, `text`)
-- Optional **real-time financial news via Finnhub API**
-- VADER sentiment scoring (`compound` score from -1 to +1)
-- Daily aggregation per ticker
-- Simple signal rules:
-    - Bullish
-    - Bearish
-    - Neutral
-- Optional sentiment trend chart (Matplotlib)
-- CLI interface with arguments
-- Modular, job-ready code structure
+- 🔎 Fetch stock news via API (Finnhub) or CSV
+- 🧠 Perform sentiment analysis using VADER (NLP)
+- 📈 Aggregate daily sentiment scores
+- 📊 Generate trading signals (Bullish / Bearish / Neutral)
+- 📉 Visualize sentiment trends with charts
+- 🌐 Interactive web interface (Flask + JavaScript)
 
 ---
 
-## Project Structure
+## 🛠️ Tech Stack
 
-data/ \
-raw/ # Sample CSV inputs\
-processed/ # Generated daily outputs (ignored by git)\
-
-src/\
-io.py # CSV loader\
-api_client.py # Finnhub API client\
-sentiment.py # VADER sentiment scoring\
-scoring.py # Aggregation and signals\
-report.py # Report generation\
-plot.py # Sentiment visualization\
-
-outputs/ # Generated reports and plots (ignored by git)\
-
-main.py # CLI entrypoint\
-
+- **Backend:** Python, Flask
+- **Frontend:** HTML, CSS, JavaScript
+- **NLP:** VADER Sentiment Analysis
+- **Data Processing:** Pandas
+- **Visualization:** Matplotlib
+- **API:** Finnhub
 
 ---
 
-## Setup
+## 📁 Project Structure
+```commandline
+ai-stock-sentiment-analyzer/
+│
+├── data/ # Raw and processed data
+├── outputs/ # Reports and generated charts
+├── src/ # Core NLP and processing logic
+│ ├── api_client.py
+│ ├── sentiment.py
+│ ├── scoring.py
+│ ├── report.py
+│ └── plot.py
+│
+├── webapp/ # Web application layer
+│ ├── app.py
+│ ├── routes/
+│ ├── services/
+│ ├── templates/
+│ └── static/
+│
+├── main.py # CLI pipeline entry point
+├── .env
+└── requirements.txt
+```
 
-Install dependencies:
+---
+
+## ⚙️ Installation
+
+1. Clone the repository:
 
 ```bash
+git clone https://github.com/your-username/ai-stock-sentiment-analyzer.git
+cd ai-stock-sentiment-analyzer
+```
+2. Create virtual environment:
+```
+python -m venv .venv
+source .venv/bin/activate   # Mac/Linux
+.venv\Scripts\activate      # Windows
+```
+
+3. Install dependencies:
+```
 pip install -r requirements.txt
 ```
 
 ---
 
-## Using the Finnhub API
+# 🧩 Environment Variables
 
-To enable real-time financial news, you need a free API key from Finnhub.
+```md
+## 🔑 Environment Variables
 
-### Step 1 — Get an API Key
+Create a `.env` file in the root directory and add your Finnhub API key:
 
-Create an account at:
-
-https://finnhub.io
-
-Copy your API key from the dashboard.
-
----
-
-### Step 2 — Create `.env`
-
-Create a file in the project root:\
-.env
-
-Add your API key:
-
-⚠️ The `.env` file is ignored by Git to keep your API key secure.
-
----
-
-## Input Format (CSV)
-
-Example file:\
-data/raw/sample_headlines.csv
-
-Required columns:
-
-| Column | Description               |
-|--------|---------------------------|
-| date   | Format: `YYYY-MM-DD`      |
-| ticker | Stock ticker (AAPL, TSLA) |
-| text   | Headline or tweet text    |
-| source | (optional) News source    |
-
----
-
-## Run the Analyzer
-
-### Run with CSV input
-
-```bash
-python main.py --ticker AAPL
-```
-
-## Run with CSV + chart
-
-```bash
-python main.py --ticker AAPL --plot
-```
-
-## Run using Finnhub API
-
-```bash
-python main.py --use-api --ticker AAPL --from-date 2026-03-01 --to-date 2026-03-06
-```
-
-## Run with API + chart
-
-```bash
-python main.py --use-api --ticker AAPL --from-date 2026-03-01 --to-date 2026-03-06 --plot
+FINNHUB_API_KEY=your_api_key_here
 ```
 
 ---
 
-## Output
+## ▶️ Run the Application
 
-### Console Output
+Start the Flask web app:
 
-A table containing:
-
-- date
-- ticker
-- daily sentiment score
-- news count
-- signal (Bullish / Bearish / Neutral)
-
----
-
-### Files Generated
-
-| File                     | Location        | Description                   |
-|--------------------------|-----------------|-------------------------------|
-| daily_sentiment.csv      | data/processed/ | Aggregated daily sentiment    |
-| report.txt               | outputs/        | Text summary report           |
-| `<TICKER>_sentiment.png` | outputs/        | Generated when using `--plot` |
-
----
-
-## Example Pipeline
 ```bash
-News (CSV or API)
-↓
-Sentiment Analysis (VADER)
-↓
-Headline Scores
-↓
-Daily Aggregation
-↓
-Bullish / Bearish / Neutral Signal
-↓
-Report + Chart
+python -m webapp.app
+```
+
+Open in browser: http://127.0.0.1:5000
+
+
+---
+
+# 🧩 — How It Works
+
+```md
+1. Fetch stock-related news (API or CSV)
+2. Apply VADER sentiment analysis to each headline
+3. Compute sentiment scores (compound)
+4. Aggregate sentiment daily
+5. Generate trading signal
+6. Display results and chart in web UI
 ```
 
 ---
 
-## Notes
+## 📊 Example Output
 
-- This project uses **VADER**, a rule-based sentiment analyzer.
-- No model training is required.
-- Sentiment thresholds are intentionally conservative to reduce false signals.
-- Designed with **clean architecture and modular code**, suitable for portfolio projects.
+- **Signal:** Bullish / Bearish / Neutral  
+- **Sentiment Score:** Numerical value (-1 to 1)  
+- **Articles:** Number of news analyzed  
+- **Chart:** Daily sentiment trend visualization  
 
 ---
 
-## Quick Check
+## 🚧 Future Improvements
 
-Run the full pipeline:
+- Add real-time streaming data
+- Improve UI/UX with modern frameworks (React)
+- Deploy to cloud (Render / AWS)
+- Add user authentication and saved analyses
 
-```bash
-python main.py --use-api --ticker AAPL --plot
-```
-This will:
+---
 
-Fetch news from Finnhub
+## 👤 Author
 
-Analyze sentiment
+Developed by Eris Kanapari
 
-Generate a daily signal
-
-Create a sentiment trend chart
+Aspiring AI/ML Engineer with focus on real-world applications of NLP and data-driven decision systems.
